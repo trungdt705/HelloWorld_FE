@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-// omit other imports
-import { selectAllFood, fetchFoods } from './foodSlice';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectAllFood, fetchFoods } from "./foodSlice";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import FoodCard from "../../components/FoodCard";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1
+		flexGrow: 1,
 	},
 	paper: {
 		padding: theme.spacing(2),
-		textAlign: 'center',
-		color: theme.palette.text.secondary
-	}
+		textAlign: "center",
+		color: theme.palette.text.secondary,
+	},
 }));
 
 export const FilmList = () => {
@@ -22,20 +23,29 @@ export const FilmList = () => {
 	const foods = useSelector(selectAllFood);
 	const foodStatus = useSelector((state) => state.food.status);
 	const classes = useStyles();
-	const [expanded, setExpanded] = React.useState(false);
 
-	const handleExpandClick = () => {
-		setExpanded(!expanded);
-	};
 	let content;
-	if (foodStatus === 'succeeded') {
-		content = foods.map((food) => <p key={food.id}>{food.name}</p>);
+	if (foodStatus === "succeeded") {
+		console.log("ok");
+		content = foods.map((food) => (
+			<Grid item xs={4}>
+				<FoodCard food={food} />
+			</Grid>
+		));
 	}
 	useEffect(() => {
-		if (foodStatus === 'idle') {
+		if (foodStatus === "idle") {
 			dispatch(fetchFoods());
 		}
 	}, [foodStatus, dispatch]);
 
-	return <div>{content}</div>;
+	return (
+		<div className={classes.root}>
+			<Container fixed>
+				<Grid container spacing={6}>
+					{content}
+				</Grid>
+			</Container>
+		</div>
+	);
 };
