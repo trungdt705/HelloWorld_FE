@@ -1,10 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
-import foodReducer from '../features/food/foodSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import foodReducer from "../features/food/foodSlice";
+import filmReducer from "../features/films/filmSlice";
+import backDropReducer from "../features/backdrop/backDropSlice";
+import botNavReducer from "../features/botnav/botNavSlice";
+import eventReducer from "../features/events/eventSlice";
 
 export default configureStore({
 	reducer: {
-		counter: counterReducer,
-		food: foodReducer
-	}
+		food: foodReducer,
+		film: filmReducer,
+		backdrop: backDropReducer,
+		botnav: botNavReducer,
+		event: eventReducer,
+	},
 });

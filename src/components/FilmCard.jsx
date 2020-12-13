@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -12,7 +13,7 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import moment from "moment-timezone";
+import { sliceField } from "../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
 	media: {
@@ -27,27 +28,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function sliceName(name) {
-	let sliceName = name;
-	if (name.length > 30) {
-		sliceName = name.slice(0, 30);
-		sliceName += "...";
-	}
-	return sliceName;
+function transformPremiere(premiere) {
+	return `Khởi chiếu: ${premiere}`;
 }
 
-function sliceDesc(desc) {
-	let sliceDesc = desc;
-	if (desc.length > 30) {
-		sliceDesc = desc.slice(0, 30);
-		sliceDesc += "...";
-	}
-	return sliceDesc;
-}
-
-export default function FoodCard(props) {
+export default function FilmCard(props) {
 	const classes = useStyles();
-	const { food } = props;
+	const { film } = props;
 	return (
 		<Card className={classes.root}>
 			<CardHeader
@@ -61,19 +48,19 @@ export default function FoodCard(props) {
 						<MoreVertIcon />
 					</IconButton>
 				}
-				title={sliceName(food.name)}
-				subheader={moment(food.created_at).format(
-					"YYYY-MM-DD HH:mm ZZ"
-				)}
+				title={sliceField(film.name, 30)}
+				subheader={transformPremiere(film.premiere)}
 			/>
-			<CardMedia
-				className={classes.media}
-				image={food.thumbnail}
-				title="Paella dish"
-			/>
+			<Link to={`/films/${film.id}`}>
+				<CardMedia
+					className={classes.media}
+					image={film.image}
+					title="Paella dish"
+				/>
+			</Link>
 			<CardContent>
 				<Typography variant="body2" color="textSecondary" component="p">
-					{sliceDesc(food.description)}
+					{sliceField(film.description, 30)}
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
