@@ -31,7 +31,7 @@ export default function EventItem(props) {
 					<Typography variant="body2" color="textSecondary">
 						{moment(event.due_date)
 							.tz("Asia/Ho_Chi_Minh")
-							.format("L")}
+							.format("DD-MM-YYYY HH:mm")}
 					</Typography>
 				</TimelineOppositeContent>
 				<TimelineSeparator>

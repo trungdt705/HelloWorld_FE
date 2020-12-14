@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { get } from "../../utils/client";
+import { get, getById } from "../../utils/client";
 
 export const selectAllFood = (state) => state.food.foods;
 
@@ -16,7 +16,7 @@ export const fetchFoods = createAsyncThunk("films/fetchFoods", async () => {
 
 export const getFoodById = createAsyncThunk("films/getFoodById", async (id) => {
 	try {
-		const response = await get(`foods/${id}/`);
+		const response = await getById("foods", id);
 		return response;
 	} catch (error) {
 		throw error;
