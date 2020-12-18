@@ -1,34 +1,34 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectAllFood, fetchFoods } from "./foodSlice";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectAllFood, fetchFoods } from './foodSlice';
 import {
 	selectAllCategory,
-	fetchCategories,
-} from "../categories/categorySlice";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import Avatar from "@material-ui/core/Avatar";
-import FoodCard from "../../components/FoodCard";
-import { show, hide, selectBackDropStatus } from "../backdrop/backDropSlice";
+	fetchCategories
+} from '../categories/categorySlice';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Avatar from '@material-ui/core/Avatar';
+import FoodCard from '../../components/FoodCard';
+import { show, hide, selectBackDropStatus } from '../backdrop/backDropSlice';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1,
-		display: "flex",
-		"& > *": {
-			margin: theme.spacing(1),
-		},
+		display: 'flex',
+		'& > *': {
+			margin: theme.spacing(1)
+		}
 	},
 	paper: {
 		padding: theme.spacing(2),
-		textAlign: "center",
-		color: theme.palette.text.secondary,
+		textAlign: 'center',
+		color: theme.palette.text.secondary
 	},
 	large: {
 		width: theme.spacing(6),
-		height: theme.spacing(6),
-	},
+		height: theme.spacing(6)
+	}
 }));
 
 export const FoodList = () => {
@@ -42,22 +42,22 @@ export const FoodList = () => {
 
 	let contentProduct;
 	let contentCategory;
-	if (foodStatus === "succeeded" && !backDropStatus) {
+	if (foodStatus === 'succeeded' && !backDropStatus) {
 		contentProduct = foods.map((food) => (
 			<Grid item xs={12} key={food.id}>
 				<FoodCard food={food} />
 			</Grid>
 		));
 	}
-	if (categoryStatus === "succeeded" && !backDropStatus) {
+	if (categoryStatus === 'succeeded' && !backDropStatus) {
 		contentCategory = categories.map((category) => (
-			<Grid item xs={3}>
+			<Grid item xs={3} key={category.id}>
 				<Avatar
 					alt="Remy Sharp"
 					src={category.thumbnail}
 					className={classes.large}
 				/>
-				<span style={{ fontWeight: "bold" }}>{category.name}</span>
+				<span style={{ fontWeight: 'bold' }}>{category.name}</span>
 			</Grid>
 		));
 	}

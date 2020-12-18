@@ -1,61 +1,64 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import {
-	selectAllFilm,
-	fetchFilms,
-	selectPagination,
-	nextPage,
-} from "./filmSlice";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import FilmCard from "../../components/FilmCard";
-import { show, hide, selectBackDropStatus } from "../backdrop/backDropSlice";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { selectAllFilm, fetchFilms } from './filmSlice';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import FilmCard from '../../components/FilmCard';
+import { show, hide } from '../backdrop/backDropSlice';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1,
+		flexGrow: 1
 	},
 	paper: {
 		padding: theme.spacing(2),
-		textAlign: "center",
-		color: theme.palette.text.secondary,
-	},
+		textAlign: 'center',
+		color: theme.palette.text.secondary
+	}
 }));
 
 export const FilmList = () => {
+	const [page, setPage] = useState(1);
 	const dispatch = useDispatch();
 	const films = useSelector(selectAllFilm);
-	const filmStatus = useSelector((state) => state.film.statusAll);
-	const pagination = useSelector(selectPagination);
-	const backDropStatus = useSelector(selectBackDropStatus);
 	const classes = useStyles();
-	let content;
-	if (filmStatus === "succeeded" && !backDropStatus) {
-		content = films.map((film) => {
-			return (
-				<Grid item xs={12} key={film.id}>
-					<FilmCard film={film} />
-				</Grid>
-			);
-		});
-	}
+	const loadMore = () => {
+		setPage(page + 1);
+	};
 
 	useEffect(() => {
 		async function getFilms() {
+			console.log(page);
 			dispatch(show());
-			await dispatch(fetchFilms(pagination));
+			await dispatch(fetchFilms({ page, limit: 5 }));
 			dispatch(hide());
 		}
 		getFilms();
-	}, [pagination]);
+	}, [page]);
 
 	return (
 		<div className={classes.root}>
 			<Container fixed style={{ marginTop: 16, marginBottom: 100 }}>
-				<Grid container spacing={3}>
-					{content}
-				</Grid>
+				<InfiniteScroll
+					dataLength={films.length}
+					next={loadMore}
+					hasMore={true}
+					loader={<h4>Loading...</h4>}
+				>
+					<Grid container spacing={3}>
+						{films.length > 0
+							? films.map((film) => {
+									return (
+										<Grid item xs={12} key={film.id}>
+											<FilmCard film={film} />
+										</Grid>
+									);
+							  })
+							: ''}
+					</Grid>
+				</InfiniteScroll>
 			</Container>
 		</div>
 	);
