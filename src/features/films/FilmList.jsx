@@ -1,65 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { selectAllFilm, fetchFilms } from './filmSlice';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import FilmCard from '../../components/FilmCard';
-import { show, hide } from '../backdrop/backDropSlice';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {
+	selectAllFilm,
+	fetchFilms,
+	selectPagination,
+	nextPage,
+} from "./filmSlice";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import FilmCard from "../../components/FilmCard";
+import { show, hide } from "../backdrop/backDropSlice";
+import withInfinitiveScroll from "../../hoc/withInfinitiveScroll";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1
+		flexGrow: 1,
 	},
 	paper: {
 		padding: theme.spacing(2),
-		textAlign: 'center',
-		color: theme.palette.text.secondary
-	}
+		textAlign: "center",
+		color: theme.palette.text.secondary,
+	},
 }));
 
-export const FilmList = () => {
-	const [page, setPage] = useState(1);
-	const dispatch = useDispatch();
-	const films = useSelector(selectAllFilm);
+const FilmList = (props) => {
+	console.log(props.data);
+	// const dispatch = useDispatch();
+	// const films = useSelector(selectAllFilm);
+	// const pagination = useSelector(selectPagination);
 	const classes = useStyles();
-	const loadMore = () => {
-		setPage(page + 1);
-	};
+
+	// const loadMore = () => {
+	// 	dispatch(nextPage(pagination.page + 1));
+	// };
 
 	useEffect(() => {
-		async function getFilms() {
-			console.log(page);
-			dispatch(show());
-			await dispatch(fetchFilms({ page, limit: 5 }));
-			dispatch(hide());
-		}
-		getFilms();
-	}, [page]);
+		// async function getFilms() {
+		// 	dispatch(show());
+		// 	await dispatch(fetchFilms({ page: pagination.page, limit: 5 }));
+		// 	dispatch(hide());
+		// }
+		// getFilms();
+		// return () => {
+		// 	if (props.history.location.pathname !== "/films") {
+		// 		dispatch({ type: "destroy_session" });
+		// 	}
+		// };
+	}, []);
 
 	return (
 		<div className={classes.root}>
-			<Container fixed style={{ marginTop: 16, marginBottom: 100 }}>
-				<InfiniteScroll
-					dataLength={films.length}
-					next={loadMore}
-					hasMore={true}
-					loader={<h4>Loading...</h4>}
-				>
-					<Grid container spacing={3}>
-						{films.length > 0
-							? films.map((film) => {
-									return (
-										<Grid item xs={12} key={film.id}>
-											<FilmCard film={film} />
-										</Grid>
-									);
-							  })
-							: ''}
-					</Grid>
-				</InfiniteScroll>
-			</Container>
+			{props.data.length > 0
+				? props.data.map((film) => {
+						return (
+							<Grid item xs={12} key={film.id}>
+								<FilmCard film={film} />
+							</Grid>
+						);
+				  })
+				: ""}
 		</div>
 	);
 };
+
+export default withInfinitiveScroll(FilmList);

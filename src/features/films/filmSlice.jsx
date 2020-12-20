@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { get, getById } from '../../utils/client';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { get, getById } from "../../utils/client";
 
 export const selectAllFilm = (state) => state.film.films;
 
@@ -8,7 +8,7 @@ export const selectFilmById = (state) => state.film.oneFilm;
 export const selectPagination = (state) => state.film.pagination;
 
 export const fetchFilms = createAsyncThunk(
-	'films/fetchFilms',
+	"films/fetchFilms",
 	async (query) => {
 		try {
 			const response = await get(
@@ -21,63 +21,61 @@ export const fetchFilms = createAsyncThunk(
 	}
 );
 
-export const getFilmById = createAsyncThunk('films/getFilmById', async (id) => {
+export const getFilmById = createAsyncThunk("films/getFilmById", async (id) => {
 	try {
-		const response = await getById('films', id);
+		const response = await getById("films", id);
 		return response;
 	} catch (error) {
 		throw error;
 	}
 });
 
-const filmSlice = createSlice({
-	name: 'film',
-	initialState: {
-		films: [],
-		oneFilm: null,
-		statusAll: 'idle',
-		statusOne: 'idle',
-		pagination: {
-			page: 1,
-			limit: 10
-		},
-		error: null
+const initialState = {
+	films: [],
+	oneFilm: null,
+	statusAll: "idle",
+	statusOne: "idle",
+	pagination: {
+		page: 1,
+		limit: 10,
 	},
-	reducers: {},
+	error: null,
+};
+
+const filmSlice = createSlice({
+	name: "film",
+	initialState,
+	reducers: {
+		nextPage: (state, action) => {
+			state.pagination.page = action.payload;
+		},
+	},
 	extraReducers: {
 		[fetchFilms.pending]: (state, action) => {
-			state.statusAll = 'loading';
+			state.statusAll = "loading";
 		},
 		[fetchFilms.fulfilled]: (state, action) => {
-			state.statusAll = 'succeeded';
-			console.log(
-				'state.films.length',
-				state.films.length,
-				action.payload
-			);
-			// if (state.films.length === 0) {
-			// 	state.films = action.payload;
-			// } else {
-			// 	state.films = state.films.concat(action.payload);
-			// }
+			state.statusAll = "succeeded";
 			state.films = state.films.concat(action.payload);
 		},
 		[fetchFilms.rejected]: (state, action) => {
-			state.statusAll = 'failed';
+			state.statusAll = "failed";
 			state.error = action.error.message;
 		},
 		[getFilmById.pending]: (state, action) => {
-			state.statusOne = 'loading';
+			state.statusOne = "loading";
 		},
 		[getFilmById.fulfilled]: (state, action) => {
-			state.statusOne = 'succeeded';
+			state.statusOne = "succeeded";
 			state.oneFilm = action.payload;
 		},
 		[getFilmById.rejected]: (state, action) => {
-			state.statusOne = 'failed';
+			state.statusOne = "failed";
 			state.error = action.error.message;
-		}
-	}
+		},
+	},
 });
+
+export const { nextPage } = filmSlice.actions;
 
 export default filmSlice.reducer;

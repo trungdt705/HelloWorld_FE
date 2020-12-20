@@ -9,7 +9,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { FoodList } from "./features/food/FoodList";
 import { FoodDetail } from "./features/food/FoodDetail";
-import { FilmList } from "./features/films/FilmList";
+import FilmList from "./features/films/FilmList";
 import { FilmDetail } from "./features/films/FilmDetail";
 import { EventList } from "./features/events/EventList";
 import { selectBackDropStatus } from "./features/backdrop/backDropSlice";
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-	console.log("app");
 	const history = useHistory();
 	const classes = useStyles();
 	const dispatch = useDispatch();

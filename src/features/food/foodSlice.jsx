@@ -1,22 +1,22 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { get, getById } from '../../utils/client';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { get, getById } from "../../utils/client";
 
 export const selectAllFood = (state) => state.food.foods;
 
 export const selectFoodById = (state) => state.food.foodOne;
 
-export const fetchFoods = createAsyncThunk('films/fetchFoods', async () => {
+export const fetchFoods = createAsyncThunk("films/fetchFoods", async () => {
 	try {
-		const response = await get('foods/');
+		const response = await get("foods/");
 		return response;
 	} catch (error) {
 		throw error;
 	}
 });
 
-export const getFoodById = createAsyncThunk('films/getFoodById', async (id) => {
+export const getFoodById = createAsyncThunk("films/getFoodById", async (id) => {
 	try {
-		const response = await getById('foods', id);
+		const response = await getById("foods", id);
 		return response;
 	} catch (error) {
 		throw error;
@@ -24,42 +24,41 @@ export const getFoodById = createAsyncThunk('films/getFoodById', async (id) => {
 });
 
 const foodSlice = createSlice({
-	name: 'food',
+	name: "food",
 	initialState: {
 		foods: [],
 		foodOne: null,
-		statusAll: 'idle',
-		statusOne: 'idle',
-		error: null
+		statusAll: "idle",
+		statusOne: "idle",
+		error: null,
 	},
 	reducers: {},
 	extraReducers: {
 		[fetchFoods.pending]: (state, action) => {
-			state.status = 'loading';
+			state.status = "loading";
 		},
 		[fetchFoods.fulfilled]: (state, action) => {
-			state.statusAll = 'succeeded';
-			console.log('state.foods.length', state.foods.length);
+			state.statusAll = "succeeded";
 			// Add any fetched posts to the array
 			state.foods = action.payload;
 		},
 		[fetchFoods.rejected]: (state, action) => {
-			state.statusAll = 'failed';
+			state.statusAll = "failed";
 			state.error = action.error.message;
 		},
 		[getFoodById.pending]: (state, action) => {
-			state.statusOne = 'loading';
+			state.statusOne = "loading";
 		},
 		[getFoodById.fulfilled]: (state, action) => {
-			state.statusOne = 'succeeded';
+			state.statusOne = "succeeded";
 			// Add any fetched posts to the array
 			state.foodOne = action.payload;
 		},
 		[getFoodById.rejected]: (state, action) => {
-			state.statusOne = 'failed';
+			state.statusOne = "failed";
 			state.error = action.error.message;
-		}
-	}
+		},
+	},
 });
 
 export default foodSlice.reducer;
