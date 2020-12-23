@@ -35,14 +35,14 @@ const FilmList = (props) => {
 	const { page, limit } = useSelector(selectPagination);
 	const dispatch = useDispatch();
 	const loadMore = () => {
-		dispatch(nextPage(page + 1));
 		if (data.length >= total) {
 			dispatch(setLoadMore(false));
+		} else {
+			dispatch(nextPage(page + 1));
 		}
 	};
 
 	useEffect(() => {
-		console.log(isLoadMore);
 		function getData() {
 			dispatch(show());
 			dispatch(fetchFilms({ page, limit }));
