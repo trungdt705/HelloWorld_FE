@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { UNAUTHORIZED } from 'http-status';
 import { get, getById } from '../../utils/client';
 import { handleRefreshToken } from '../../utils/auth';
 
@@ -7,10 +8,10 @@ export const selectAllFilm = (state) => state.film.films;
 export const selectFilmById = (state) => state.film.oneFilm;
 
 export const selectPagination = (state) => state.film.pagination;
-let a = 1;
+
 export const fetchFilms = createAsyncThunk(
 	'films/fetchFilms',
-	async (query, { getState, dispatch }) => {
+	async (query, { getState }) => {
 		const token = getState().auth.accessToken;
 		try {
 			const response = await get(
@@ -23,7 +24,9 @@ export const fetchFilms = createAsyncThunk(
 			);
 			return response;
 		} catch (error) {
-			await handleRefreshToken(getState().auth.refreshToken);
+			if (error.response.status === UNAUTHORIZED) {
+				await handleRefreshToken(getState().auth.refreshToken);
+			}
 			throw error;
 		}
 	}

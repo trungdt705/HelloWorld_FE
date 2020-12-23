@@ -1,6 +1,6 @@
 import { post, get } from './client';
 import store from '../app/store';
-import { setAccessToken } from '../features/auth/authSlice';
+import { setAccessToken, setIsNew } from '../features/auth/authSlice';
 import jwtDecode from 'jwt-decode';
 
 export const authenticate = async (user) => {
@@ -51,7 +51,8 @@ export const handleRefreshToken = async (refreshToken) => {
 			refresh: refreshToken
 		});
 		if (result) {
-			store.dispatch(setAccessToken(`Bearer ${result.access}`));
+			store.dispatch(setAccessToken(`${result.access}`));
+			store.dispatch(setIsNew(true));
 		}
 	} catch (error) {
 		throw error;
