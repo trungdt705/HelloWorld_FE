@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAllFood, fetchFoods } from './foodSlice';
-import {
-	selectAllCategory,
-	fetchCategories
-} from '../categories/categorySlice';
-import { makeStyles } from '@material-ui/core/styles';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@material-ui/core/styles';
 import FoodCard from '../../components/FoodCard';
-import { show, hide, selectBackDropStatus } from '../backdrop/backDropSlice';
+import { CategoryList } from '../categories/CategoryList';
+import { show, hide } from '../backdrop/backDropSlice';
+import {
+	fetchFoods,
+	selectAllFood,
+	selectPagination,
+	nextPage
+} from './foodSlice';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -31,56 +33,60 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export const FoodList = () => {
-	const dispatch = useDispatch();
-	const foods = useSelector(selectAllFood);
-	const categories = useSelector(selectAllCategory);
-	const foodStatus = useSelector((state) => state.food.statusAll);
-	const categoryStatus = useSelector((state) => state.category.statusAll);
-	const backDropStatus = useSelector(selectBackDropStatus);
+const FoodList = (props) => {
+	const data = useSelector(selectAllFood);
+	const pagination = useSelector(selectPagination);
 	const classes = useStyles();
+	const dispatch = useDispatch();
+	const loadMore = () => {
+		dispatch(nextPage(pagination.page + 1));
+	};
 
-	let contentProduct;
-	let contentCategory;
-	if (foodStatus === 'succeeded' && !backDropStatus) {
-		contentProduct = foods.map((food) => (
-			<Grid item xs={12} key={food.id}>
-				<FoodCard food={food} />
-			</Grid>
-		));
-	}
-	if (categoryStatus === 'succeeded' && !backDropStatus) {
-		contentCategory = categories.map((category) => (
-			<Grid item xs={3} key={category.id}>
-				<Avatar
-					alt="Remy Sharp"
-					src={category.thumbnail}
-					className={classes.large}
-				/>
-				<span style={{ fontWeight: 'bold' }}>{category.name}</span>
-			</Grid>
-		));
-	}
 	useEffect(() => {
-		async function getFoods() {
+		function getData() {
 			dispatch(show());
-			await dispatch(fetchFoods());
-			await dispatch(fetchCategories());
+			dispatch(fetchFoods({ page: pagination.page, limit: 5 }));
 			dispatch(hide());
 		}
-		getFoods();
+		getData();
+		return () => {
+			if (props.history.location.pathname !== '/foods') {
+				dispatch({ type: 'destroy_session' });
+			}
+		};
 	}, []);
 
 	return (
-		<div className={classes.root}>
+		<React.Fragment>
 			<Container fixed style={{ marginTop: 16, marginBottom: 100 }}>
-				<Grid container spacing={3}>
-					{contentCategory}
+				<Grid container spacing={3} style={{ marginBottom: 16 }}>
+					<CategoryList />
 				</Grid>
-				<Grid container spacing={3}>
-					{contentProduct}
-				</Grid>
+				{data.length > 0 ? (
+					<InfiniteScroll
+						dataLength={data.length}
+						next={loadMore}
+						hasMore={true}
+						loader={<h4>Loading...</h4>}
+					>
+						<Grid container spacing={3}>
+							{data.length > 0
+								? data.map((food) => {
+										return (
+											<Grid item xs={12} key={food.id}>
+												<FoodCard food={food} />
+											</Grid>
+										);
+								  })
+								: ''}
+						</Grid>
+					</InfiniteScroll>
+				) : (
+					''
+				)}
 			</Container>
-		</div>
+		</React.Fragment>
 	);
 };
+
+export default FoodList;

@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const selectBackDropStatus = (state) => state.backdrop.open;
 
 const backDropSlice = createSlice({
-	name: "backdrop",
+	name: 'backdrop',
 	initialState: {
-		open: false,
+		open: false
 	},
 	reducers: {
 		show: (state) => {
@@ -13,8 +13,8 @@ const backDropSlice = createSlice({
 		},
 		hide: (state) => {
 			state.open = false;
-		},
-	},
+		}
+	}
 });
 
 export const { show, hide } = backDropSlice.actions;

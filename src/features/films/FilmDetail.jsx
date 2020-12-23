@@ -4,31 +4,31 @@ import {
 	CardMedia,
 	Chip,
 	Button,
-	makeStyles,
-} from "@material-ui/core";
-import DoneIcon from "@material-ui/icons/Done";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectFilmById, getFilmById } from "./filmSlice";
+	makeStyles
+} from '@material-ui/core';
+import DoneIcon from '@material-ui/icons/Done';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectFilmById, getFilmById } from './filmSlice';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1,
+		flexGrow: 1
 	},
 	paper: {
 		padding: theme.spacing(2),
-		textAlign: "center",
-		color: theme.palette.text.secondary,
+		textAlign: 'center',
+		color: theme.palette.text.secondary
 	},
 
 	media: {
-		height: 500,
+		height: 500
 	},
 
 	title: {
-		fontWeight: "bold",
-		marginRight: 10,
-	},
+		fontWeight: 'bold',
+		marginRight: 10
+	}
 }));
 
 export const FilmDetail = (props) => {
@@ -43,7 +43,7 @@ export const FilmDetail = (props) => {
 		return (
 			<React.Fragment>
 				<Container maxWidth="sm" style={{ marginBottom: 100 }}>
-					<Grid container spacing={1} style={{ textAlign: "left" }}>
+					<Grid container spacing={1} style={{ textAlign: 'left' }}>
 						<Grid item xs={12}>
 							<h2>{film.name}</h2>
 						</Grid>
@@ -62,7 +62,7 @@ export const FilmDetail = (props) => {
 							<span className={classes.title}>Thời lượng:</span>
 							<span>
 								<Chip
-									label={film.duration + " Phút"}
+									label={film.duration + ' Phút'}
 									clickable
 									color="primary"
 								/>
@@ -104,12 +104,12 @@ export const FilmDetail = (props) => {
 	let content;
 	useEffect(() => {
 		dispatch(getFilmById(match.params.id));
-	}, []);
-	if (status === "succeeded") {
+	}, [dispatch, match.params.id]);
+	if (status === 'succeeded') {
 		content = renderContentSuccess(film);
 	}
-	if (status === "error") {
-		console.log("not found");
+	if (status === 'error') {
+		console.log('not found');
 	}
 	return <div>{content}</div>;
 };
