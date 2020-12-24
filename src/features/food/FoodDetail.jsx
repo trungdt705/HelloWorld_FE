@@ -34,31 +34,32 @@ export const FoodDetail = (props) => {
 	const status = useSelector((state) => state.food.statusOne);
 	const renderContentSuccess = (food) => {
 		return (
-			<React.Fragment>
-				<Container maxWidth="sm" style={{ marginBottom: 100 }}>
-					<Grid container spacing={1} style={{ textAlign: 'left' }}>
-						<Grid item xs={12}>
-							<h2>{food.name}</h2>
-						</Grid>
-						<Grid item xs={12}>
-							<CardMedia
-								className={classes.media}
-								image={food.thumbnail}
-								title="Contemplative Reptile"
-								P
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<span className={classes.title}>Mô tả:</span>
-							<span>{food.description}</span>
-						</Grid>
-						<Grid item xs={12}>
-							<span className={classes.title}>Địa chỉ:</span>
-							<span>{food.address}</span>
-						</Grid>
+			<Container
+				maxWidth="sm"
+				style={{ paddingTop: 50, paddingBottom: 60 }}
+			>
+				<Grid container spacing={1} style={{ textAlign: 'left' }}>
+					<Grid item xs={12}>
+						<h2>{food.name}</h2>
 					</Grid>
-				</Container>
-			</React.Fragment>
+					<Grid item xs={12}>
+						<CardMedia
+							className={classes.media}
+							image={food.thumbnail}
+							title="Contemplative Reptile"
+							P
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<span className={classes.title}>Mô tả:</span>
+						<span>{food.description}</span>
+					</Grid>
+					<Grid item xs={12}>
+						<span className={classes.title}>Địa chỉ:</span>
+						<span>{food.address}</span>
+					</Grid>
+				</Grid>
+			</Container>
 		);
 	};
 	let content;

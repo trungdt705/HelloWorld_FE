@@ -9,10 +9,15 @@ export const selectPagination = (state) => state.food.pagination;
 
 export const fetchFoods = createAsyncThunk(
 	'films/fetchFoods',
-	async (query) => {
+	async (query, { getState, dispatch }) => {
 		try {
 			const response = await get(
-				`foods/?page=${query.page}&limit=${query.limit}`
+				`foods/?page=${query.page}&limit=${query.limit}`,
+				{
+					headers: {
+						Authorization: `${getState().auth.accessToken}`
+					}
+				}
 			);
 			return response.results;
 		} catch (error) {
@@ -21,31 +26,46 @@ export const fetchFoods = createAsyncThunk(
 	}
 );
 
-export const getFoodById = createAsyncThunk('films/getFoodById', async (id) => {
-	try {
-		const response = await getById('foods', id);
-		return response;
-	} catch (error) {
-		throw error;
+export const getFoodById = createAsyncThunk(
+	'films/getFoodById',
+	async (id, { getState, dispatch }) => {
+		try {
+			const response = await getById('foods', id, {
+				headers: {
+					Authorization: `${getState().auth.accessToken}`
+				}
+			});
+			return response;
+		} catch (error) {
+			throw error;
+		}
 	}
-});
+);
+
+const initialState = {
+	foods: [],
+	foodOne: null,
+	pagination: {
+		page: 1,
+		limit: 5
+	},
+	statusAll: 'idle',
+	statusOne: 'idle',
+	error: null
+};
 
 const foodSlice = createSlice({
 	name: 'food',
-	initialState: {
-		foods: [],
-		foodOne: null,
-		pagination: {
-			page: 1,
-			limit: 5
-		},
-		statusAll: 'idle',
-		statusOne: 'idle',
-		error: null
-	},
+	initialState,
 	reducers: {
 		nextPage: (state, action) => {
 			state.pagination.page = action.payload;
+		},
+		setLoadMore: (state, action) => {
+			state.isLoadMore = action.payload;
+		},
+		destroySession: (state) => {
+			return initialState;
 		}
 	},
 	extraReducers: {
@@ -76,6 +96,6 @@ const foodSlice = createSlice({
 	}
 });
 
-export const { nextPage } = foodSlice.actions;
+export const { nextPage, setLoadMore, destroySession } = foodSlice.actions;
 
 export default foodSlice.reducer;

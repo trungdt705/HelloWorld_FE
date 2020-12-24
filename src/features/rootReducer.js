@@ -23,9 +23,9 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
 	// Clear all data in redux store to initial.
-	if (action.type === 'destroy_session') {
-		state = undefined;
-	}
+	// if (action.type === 'destroy_session') {
+	// 	state.film = undefined;
+	// }
 
 	return appReducer(state, action);
 };

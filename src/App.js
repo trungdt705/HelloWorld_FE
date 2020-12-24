@@ -44,6 +44,8 @@ function App() {
 	const refreshToken = useSelector((state) => state.auth.refreshToken);
 	const classes = useStyles();
 
+	const isAuth = isAuthenticate(accessToken, refreshToken);
+
 	const handleChange = (event, newValue) => {
 		dispatch(setIcon(newValue));
 		history.push(newValue);
@@ -52,13 +54,14 @@ function App() {
 	useEffect(() => {
 		dispatch(setIcon(history.location.pathname));
 	}, [history.location.pathname]);
+
 	return (
 		<div className="App">
 			<Backdrop className={classes.backdrop} open={backDropStatus}>
 				<CircularProgress color="inherit" />
 			</Backdrop>
-			{isAuthenticate(accessToken, refreshToken) ? <AppBar /> : ''}
-			{isAuthenticate(accessToken, refreshToken) ? (
+			{isAuth ? <AppBar /> : ''}
+			{isAuth ? (
 				<BottomNavigation
 					value={botNavIcon}
 					onChange={handleChange}
@@ -86,8 +89,8 @@ function App() {
 				<ProtectedRoute path="/films" component={FilmList} />
 				<ProtectedRoute path="/events" component={EventList} />
 				<Route path="/login" component={Login} />
-				<ProtectedRoute path="/" component={Home} />
 				<Route path="/not-found" component={NotFound} />
+				<ProtectedRoute path="/" component={Home} />
 				<Redirect to="/not-found" />
 			</Switch>
 		</div>

@@ -2,47 +2,58 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Timeline from '@material-ui/lab/Timeline';
-import Container from '@material-ui/core/Container';
 import {
 	selectAllEvent,
 	fetchEvents,
 	selectPagination,
-	nextPage
+	nextPage,
+	setLoadMore,
+	destroySession
 } from './eventSlice';
-// import { makeStyles } from '@material-ui/core/styles';
 import { show, hide } from '../backdrop/backDropSlice';
 import EventItem from '../../components/EventItem';
 
-// const useStyles = makeStyles((theme) => ({
-// 	root: {
-// 		flexGrow: 1
-// 	}
-// }));
-
-export const EventList = () => {
+export const EventList = (props) => {
 	const dispatch = useDispatch();
-	// const classes = useStyles();
-	const events = useSelector(selectAllEvent);
-	const pagination = useSelector(selectPagination);
+	const data = useSelector(selectAllEvent);
+	const { page, limit } = useSelector(selectPagination);
+	const isLoadMore = useSelector((state) => state.food.isLoadMore);
+	const total = useSelector((state) => state.food.total);
+	const isNew = useSelector((state) => state.auth.isNew);
 	const loadMore = () => {
-		dispatch(nextPage(pagination.page + 1));
+		if (data.length >= total) {
+			dispatch(setLoadMore(false));
+		} else {
+			dispatch(nextPage(page + 1));
+		}
 	};
 	useEffect(() => {
+		console.log('useEffect');
 		function getEvents() {
-			dispatch(fetchEvents(pagination));
+			dispatch(show());
+			dispatch(fetchEvents({ page, limit }));
+			dispatch(hide());
 		}
 		getEvents();
-	}, [pagination, dispatch]);
+		return () => {
+			if (props.history.location.pathname !== '/events') {
+				dispatch(destroySession());
+			}
+		};
+	}, [dispatch, isNew, page]);
 	return (
-		<Timeline align="alternate" style={{ marginBottom: 100 }}>
-			{events.length > 0 ? (
+		<Timeline
+			align="alternate"
+			style={{ paddingTop: 50, paddingBottom: 50 }}
+		>
+			{data.length > 0 ? (
 				<InfiniteScroll
-					dataLength={events.length}
+					dataLength={data.length}
 					next={loadMore}
-					hasMore={true}
+					hasMore={isLoadMore}
 					loader={<h4>Loading...</h4>}
 				>
-					{events.map((event) => (
+					{data.map((event) => (
 						<EventItem event={event} key={event.id} />
 					))}
 				</InfiniteScroll>

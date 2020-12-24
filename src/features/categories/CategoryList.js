@@ -4,6 +4,7 @@ import { selectAllCategory, fetchCategories } from './categorySlice';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import { fetchFoods } from '../food/foodSlice';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -22,14 +23,19 @@ const useStyles = makeStyles((theme) => ({
 
 export const CategoryList = () => {
 	const dispatch = useDispatch();
-	const categoryStatus = useSelector((state) => state.category.statusAll);
-	const categories = useSelector((state) => state.category.categories);
+	const status = useSelector((state) => state.category.statusAll);
+	const categories = useSelector(selectAllCategory);
 	const classes = useStyles();
 	let contentCategory;
-	if (categoryStatus === 'succeeded') {
+	const handle = (id) => {
+		console.log(id);
+		// dispatch(fetchFoods({ category: id }));
+	};
+	if (status === 'succeeded') {
 		contentCategory = categories.map((category) => (
 			<Grid item xs={3} key={category.id}>
 				<Avatar
+					onClick={() => handle(category.id)}
 					alt="Remy Sharp"
 					src={category.thumbnail}
 					className={classes.large}
@@ -39,8 +45,8 @@ export const CategoryList = () => {
 		));
 	}
 	useEffect(() => {
-		async function getCategories() {
-			await dispatch(fetchCategories());
+		function getCategories() {
+			dispatch(fetchCategories({}));
 		}
 		getCategories();
 	}, []);

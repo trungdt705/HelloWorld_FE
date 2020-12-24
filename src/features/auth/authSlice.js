@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
 	accessToken: `Bearer ${localStorage.getItem('access_token')}`,
 	refreshToken: localStorage.getItem('refresh_token'),
-	isNew: false
+	isNew: false,
+	refreshStatus: 'idle'
 };
 const authSlice = createSlice({
 	name: 'auth',
@@ -14,7 +15,11 @@ const authSlice = createSlice({
 			state.accessToken = `Bearer ${action.payload}`;
 		},
 		setRefreshToken: (state, action) => {
+			localStorage.setItem('refresh_token', action.payload);
 			state.refreshToken = action.payload;
+		},
+		setStatus: (state, action) => {
+			state.refreshStatus = action.payload;
 		},
 		setIsNew: (state, action) => {
 			state.isNew = action.payload;
@@ -22,6 +27,11 @@ const authSlice = createSlice({
 	}
 });
 
-export const { setAccessToken, setRefreshToken, setIsNew } = authSlice.actions;
+export const {
+	setAccessToken,
+	setRefreshToken,
+	setIsNew,
+	setStatus
+} = authSlice.actions;
 
 export default authSlice.reducer;

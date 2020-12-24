@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { get, getById } from '../../utils/client';
+import { handleUnauthorizeError } from '../../utils/utils';
+import { setStatus } from '../auth/authSlice';
 
 export const selectAllCategory = (state) => state.category.categories;
 
@@ -7,11 +9,16 @@ export const selectCategoryById = (state) => state.category.category;
 
 export const fetchCategories = createAsyncThunk(
 	'films/fetchCategories',
-	async () => {
+	async ({}, { getState, dispatch }) => {
 		try {
-			const response = await get('categories/');
+			const response = await get('categories/', {
+				headers: {
+					Authorization: `${getState().auth.accessToken}`
+				}
+			});
 			return response.results;
 		} catch (error) {
+			await handleUnauthorizeError(error, { getState, dispatch });
 			throw error;
 		}
 	}
@@ -19,11 +26,16 @@ export const fetchCategories = createAsyncThunk(
 
 export const getCategoryById = createAsyncThunk(
 	'films/getCategoryById',
-	async (id) => {
+	async (id, { getState, dispatch }) => {
 		try {
-			const response = await getById('categories', id);
+			const response = await getById('categories', id, {
+				headers: {
+					Authorization: `${getState().auth.accessToken}`
+				}
+			});
 			return response;
 		} catch (error) {
+			await handleUnauthorizeError(error, { getState, dispatch });
 			throw error;
 		}
 	}
@@ -57,7 +69,6 @@ const categorySlice = createSlice({
 		},
 		[getCategoryById.fulfilled]: (state, action) => {
 			state.statusOne = 'succeeded';
-			// Add any fetched posts to the array
 			state.category = action.payload;
 		},
 		[getCategoryById.rejected]: (state, action) => {

@@ -26,26 +26,32 @@ export const getCurrentUser = async (token) => {
 };
 
 export const isAuthenticate = (accessToken, refreshToken) => {
-	const decodedAccessToken = jwtDecode(accessToken);
-	const decodedRefreshToken = jwtDecode(refreshToken);
-	if (
-		accessToken &&
-		decodedAccessToken.exp > Math.round(new Date().getTime() / 1000)
-	) {
+	try {
+		if (!accessToken) return false;
+		const decodedAccessToken = jwtDecode(accessToken);
+		if (
+			accessToken &&
+			decodedAccessToken.exp > Math.round(new Date().getTime() / 1000)
+		) {
+			return true;
+		}
+		if (refreshToken) {
+			const decodedRefreshToken = jwtDecode(refreshToken);
+			if (
+				!decodedRefreshToken ||
+				decodedRefreshToken.exp <
+					Math.round(new Date().getTime() / 1000)
+			) {
+				return false;
+			}
+		}
 		return true;
-	}
-
-	if (
-		!decodedRefreshToken ||
-		decodedRefreshToken.exp < Math.round(new Date().getTime() / 1000)
-	) {
+	} catch (error) {
 		return false;
 	}
-	return true;
 };
 
 export const handleRefreshToken = async (refreshToken) => {
-	console.log('handleRefreshToken');
 	try {
 		const result = await post('token/refresh/', {
 			refresh: refreshToken

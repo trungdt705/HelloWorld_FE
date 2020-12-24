@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch, useHistory } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { get } from '../utils/client';
 import moment from 'moment-timezone';
 
@@ -133,7 +129,7 @@ export default function Home(props) {
 
 	return (
 		<div className={classes.root}>
-			<Container fixed style={{ marginTop: 16 }}>
+			<Container fixed style={{ marginTop: 50 }}>
 				<Grid>
 					<div>
 						<Button variant="outlined" color="secondary">

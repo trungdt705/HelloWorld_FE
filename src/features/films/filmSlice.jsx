@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { UNAUTHORIZED } from 'http-status';
 import { get, getById } from '../../utils/client';
-import { handleRefreshToken } from '../../utils/auth';
 
 export const selectAllFilm = (state) => state.film.films;
 
@@ -11,35 +9,39 @@ export const selectPagination = (state) => state.film.pagination;
 
 export const fetchFilms = createAsyncThunk(
 	'films/fetchFilms',
-	async (query, { getState }) => {
-		const token = getState().auth.accessToken;
+	async (query, { getState, dispatch }) => {
 		try {
 			const response = await get(
 				`films/?page=${query.page}&limit=${query.limit}`,
 				{
 					headers: {
-						Authorization: `${token}`
+						Authorization: `${getState().auth.accessToken}`
 					}
 				}
 			);
 			return response;
 		} catch (error) {
-			if (error.response.status === UNAUTHORIZED) {
-				await handleRefreshToken(getState().auth.refreshToken);
-			}
 			throw error;
 		}
 	}
 );
 
-export const getFilmById = createAsyncThunk('films/getFilmById', async (id) => {
-	try {
-		const response = await getById('films', id);
-		return response;
-	} catch (error) {
-		throw error;
+export const getFilmById = createAsyncThunk(
+	'films/getFilmById',
+	async (id, { getState, dispatch }) => {
+		try {
+			const token = getState().auth.accessToken;
+			const response = await getById('films', id, {
+				headers: {
+					Authorization: `${token}`
+				}
+			});
+			return response;
+		} catch (error) {
+			throw error;
+		}
 	}
-});
+);
 
 const initialState = {
 	films: [],
@@ -65,8 +67,8 @@ const filmSlice = createSlice({
 		setLoadMore: (state, action) => {
 			state.isLoadMore = action.payload;
 		},
-		setStatus: (state, action) => {
-			state.statusAll = action.payload;
+		destroySession: (state) => {
+			return initialState;
 		}
 	},
 	extraReducers: {
@@ -96,6 +98,6 @@ const filmSlice = createSlice({
 	}
 });
 
-export const { nextPage, setLoadMore, setStatus } = filmSlice.actions;
+export const { nextPage, setLoadMore, destroySession } = filmSlice.actions;
 
 export default filmSlice.reducer;
