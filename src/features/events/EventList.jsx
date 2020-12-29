@@ -1,38 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Timeline from '@material-ui/lab/Timeline';
 import {
 	selectAllEvent,
 	fetchEvents,
-	selectPagination,
 	nextPage,
 	setLoadMore,
 	destroySession
 } from './eventSlice';
-import { show, hide } from '../backdrop/backDropSlice';
 import EventItem from '../../components/EventItem';
+const BackDropCustom = lazy(() => import('../../components/BackDrop'));
 
 export const EventList = (props) => {
 	const dispatch = useDispatch();
+	const [open, setOpen] = useState(false);
 	const data = useSelector(selectAllEvent);
-	const { page, limit } = useSelector(selectPagination);
-	const isLoadMore = useSelector((state) => state.food.isLoadMore);
-	const total = useSelector((state) => state.food.total);
+	const query = useSelector((state) => state.event.query);
+	const isLoadMore = useSelector((state) => state.event.isLoadMore);
+	const total = useSelector((state) => state.event.total);
 	const isNew = useSelector((state) => state.auth.isNew);
 	const loadMore = () => {
-		if (data.length >= total) {
+		if (data.length !== 0 && data.length >= total) {
 			dispatch(setLoadMore(false));
 		} else {
-			dispatch(nextPage(page + 1));
+			dispatch(nextPage(query.page + 1));
 		}
 	};
 	useEffect(() => {
-		console.log('useEffect');
-		function getEvents() {
-			dispatch(show());
-			dispatch(fetchEvents({ page, limit }));
-			dispatch(hide());
+		async function getEvents() {
+			setOpen(true);
+			await dispatch(fetchEvents(query));
+			setOpen(false);
 		}
 		getEvents();
 		return () => {
@@ -40,12 +39,15 @@ export const EventList = (props) => {
 				dispatch(destroySession());
 			}
 		};
-	}, [dispatch, isNew, page]);
+	}, [dispatch, isNew, query]);
 	return (
 		<Timeline
 			align="alternate"
 			style={{ paddingTop: 50, paddingBottom: 50 }}
 		>
+			<Suspense fallback={<div>Loading...</div>}>
+				<BackDropCustom open={open} />
+			</Suspense>
 			{data.length > 0 ? (
 				<InfiniteScroll
 					dataLength={data.length}

@@ -84,58 +84,56 @@ export default function LoginForm(props) {
 				style={{ minHeight: '100vh' }}
 			>
 				<form className={classes.root} noValidate autoComplete="off">
-					<div>
-						<FormControl
-							fullWidth
-							className={clsx(classes.margin, classes.textField)}
-							variant="outlined"
-						>
-							<InputLabel htmlFor="outlined-adornment-password">
-								Email
-							</InputLabel>
-							<OutlinedInput
-								id="outlined-adornment-password"
-								type="text"
-								value={values.email}
-								onChange={handleChange('email')}
-								labelWidth={70}
-							/>
-						</FormControl>
-						<FormControl
-							fullWidth
-							className={clsx(classes.margin, classes.textField)}
-							variant="outlined"
-						>
-							<InputLabel htmlFor="outlined-adornment-password">
-								Password
-							</InputLabel>
-							<OutlinedInput
-								id="outlined-adornment-password"
-								type={values.showPassword ? 'text' : 'password'}
-								value={values.password}
-								onChange={handleChange('password')}
-								endAdornment={
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle password visibility"
-											onClick={handleClickShowPassword}
-											onMouseDown={
-												handleMouseDownPassword
-											}
-											edge="end"
-										>
-											{values.showPassword ? (
-												<Visibility />
-											) : (
-												<VisibilityOff />
-											)}
-										</IconButton>
-									</InputAdornment>
-								}
-								labelWidth={70}
-							/>
-						</FormControl>
-					</div>
+					<FormControl
+						fullWidth
+						className={clsx(classes.margin, classes.textField)}
+						variant="outlined"
+					>
+						<InputLabel htmlFor="outlined-adornment-password">
+							Email
+						</InputLabel>
+						<OutlinedInput
+							id="outlined-adornment-password"
+							type="text"
+							value={values.email}
+							onChange={handleChange('email')}
+							labelWidth={70}
+						/>
+					</FormControl>
+					<FormControl
+						fullWidth
+						className={clsx(classes.margin, classes.textField)}
+						variant="outlined"
+					>
+						<InputLabel htmlFor="outlined-adornment-password">
+							Password
+						</InputLabel>
+						<OutlinedInput
+							id="outlined-adornment-password"
+							type={values.showPassword ? 'text' : 'password'}
+							value={values.password}
+							onChange={handleChange('password')}
+							endAdornment={
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										onMouseDown={handleMouseDownPassword}
+										edge="end"
+									>
+										{values.showPassword ? (
+											<Visibility />
+										) : (
+											<VisibilityOff />
+										)}
+									</IconButton>
+								</InputAdornment>
+							}
+							labelWidth={70}
+						/>
+					</FormControl>
+				</form>
+				<div style={{ textAlign: 'center' }}>
 					<Button
 						variant="outlined"
 						size="medium"
@@ -143,9 +141,9 @@ export default function LoginForm(props) {
 						onClick={login}
 						className={classes.margin}
 					>
-						Medium
+						Đăng nhập
 					</Button>
-				</form>
+				</div>
 			</Grid>
 		</Container>
 	);

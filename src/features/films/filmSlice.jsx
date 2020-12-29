@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import queryString from 'querystring';
 import { get, getById } from '../../utils/client';
 
 export const selectAllFilm = (state) => state.film.films;
@@ -11,14 +12,12 @@ export const fetchFilms = createAsyncThunk(
 	'films/fetchFilms',
 	async (query, { getState, dispatch }) => {
 		try {
-			const response = await get(
-				`films/?page=${query.page}&limit=${query.limit}`,
-				{
-					headers: {
-						Authorization: `${getState().auth.accessToken}`
-					}
+			const stringified = queryString.stringify(query);
+			const response = await get(`films/?${stringified}`, {
+				headers: {
+					Authorization: `${getState().auth.accessToken}`
 				}
-			);
+			});
 			return response;
 		} catch (error) {
 			throw error;
@@ -50,9 +49,9 @@ const initialState = {
 	statusOne: 'idle',
 	isLoadMore: true,
 	total: 0,
-	pagination: {
+	query: {
 		page: 1,
-		limit: 5
+		limit: 3
 	},
 	error: null
 };
@@ -62,10 +61,13 @@ const filmSlice = createSlice({
 	initialState,
 	reducers: {
 		nextPage: (state, action) => {
-			state.pagination.page = action.payload;
+			state.query.page = action.payload;
 		},
 		setLoadMore: (state, action) => {
 			state.isLoadMore = action.payload;
+		},
+		setQuery: (state, action) => {
+			state.query = action.payload;
 		},
 		destroySession: (state) => {
 			return initialState;
@@ -98,6 +100,11 @@ const filmSlice = createSlice({
 	}
 });
 
-export const { nextPage, setLoadMore, destroySession } = filmSlice.actions;
+export const {
+	nextPage,
+	setLoadMore,
+	destroySession,
+	setQuery
+} = filmSlice.actions;
 
 export default filmSlice.reducer;

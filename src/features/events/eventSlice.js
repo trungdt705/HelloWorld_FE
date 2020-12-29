@@ -21,7 +21,7 @@ export const fetchEvents = createAsyncThunk(
 					}
 				}
 			);
-			return response.results;
+			return response;
 		} catch (error) {
 			if (
 				error.response.status === UNAUTHORIZED &&
@@ -61,10 +61,13 @@ const initialState = {
 	event: null,
 	statusAll: 'idle',
 	statusOne: 'idle',
-	pagination: {
+	isLoadMore: true,
+	query: {
 		page: 1,
-		limit: 10
+		limit: 10,
+		category: ''
 	},
+	total: 0,
 	error: null
 };
 
@@ -73,13 +76,13 @@ const eventSlice = createSlice({
 	initialState,
 	reducers: {
 		nextPage: (state, action) => {
-			state.pagination.page = action.payload;
+			state.query.page = action.payload;
 		},
 		setLoadMore: (state, action) => {
 			state.isLoadMore = action.payload;
 		},
-		setStatus: (state, action) => {
-			state.statusAll = action.payload;
+		setQuery: (state, action) => {
+			state.query = action.payload;
 		},
 		destroySession: (state) => {
 			return initialState;
@@ -91,7 +94,8 @@ const eventSlice = createSlice({
 		},
 		[fetchEvents.fulfilled]: (state, action) => {
 			state.statusAll = 'succeeded';
-			state.events = state.events.concat(action.payload);
+			state.events = state.events.concat(action.payload.results);
+			state.total = action.payload.count;
 		},
 		[fetchEvents.rejected]: (state, action) => {
 			state.statusAll = 'failed';
@@ -111,6 +115,11 @@ const eventSlice = createSlice({
 	}
 });
 
-export const { nextPage, setLoadMore, destroySession } = eventSlice.actions;
+export const {
+	nextPage,
+	setLoadMore,
+	destroySession,
+	setQuery
+} = eventSlice.actions;
 
 export default eventSlice.reducer;

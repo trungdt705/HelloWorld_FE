@@ -16,7 +16,7 @@ export const getCurrentUser = async (token) => {
 	try {
 		const result = await get('users/current/', {
 			headers: {
-				Authorization: `Bearer ${token}`
+				Authorization: `${token}`
 			}
 		});
 		return result;

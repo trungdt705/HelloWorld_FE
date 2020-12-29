@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import { get } from '../utils/client';
 import moment from 'moment-timezone';
+import { get } from '../utils/client';
 
 const categories = [
 	{
@@ -110,7 +110,7 @@ export default function Home(props) {
 	const dispatch = useDispatch();
 
 	const [exchangeRate, setExchangeRate] = useState('');
-
+	const accessToken = useSelector((state) => state.auth.accessToken);
 	const goToPage = (link) => {
 		props.history.push(link);
 	};
@@ -118,7 +118,12 @@ export default function Home(props) {
 	useEffect(() => {
 		async function getExchangeRateToDay() {
 			try {
-				const response = await get('exchange-rates/actions/');
+				const response = await get('exchange-rates/actions/', {
+					headers: {
+						Authorization: accessToken
+					}
+				});
+				// console.log(response);
 				setExchangeRate(response.data);
 			} catch (error) {
 				throw error;

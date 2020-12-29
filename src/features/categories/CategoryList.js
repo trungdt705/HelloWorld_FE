@@ -4,7 +4,7 @@ import { selectAllCategory, fetchCategories } from './categorySlice';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import { fetchFoods } from '../food/foodSlice';
+import { destroySession, setQuery } from '../food/foodSlice';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -27,16 +27,16 @@ export const CategoryList = () => {
 	const categories = useSelector(selectAllCategory);
 	const classes = useStyles();
 	let contentCategory;
-	const handle = (id) => {
-		console.log(id);
-		// dispatch(fetchFoods({ category: id }));
+	const getFoodsByCategory = (id) => {
+		dispatch(destroySession());
+		dispatch(setQuery({ page: 1, limit: 1, category: id }));
 	};
 	if (status === 'succeeded') {
 		contentCategory = categories.map((category) => (
 			<Grid item xs={3} key={category.id}>
 				<Avatar
-					onClick={() => handle(category.id)}
-					alt="Remy Sharp"
+					onClick={() => getFoodsByCategory(category.id)}
+					alt={category.name}
 					src={category.thumbnail}
 					className={classes.large}
 				/>
@@ -49,7 +49,7 @@ export const CategoryList = () => {
 			dispatch(fetchCategories({}));
 		}
 		getCategories();
-	}, []);
+	}, [dispatch]);
 
 	return <React.Fragment>{contentCategory}</React.Fragment>;
 };

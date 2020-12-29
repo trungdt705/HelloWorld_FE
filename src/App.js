@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { BOTNAV as botnav } from './contants/botnav';
 import AppBar from './components/AppBar';
 import Home from './components/Home';
@@ -18,9 +16,9 @@ import { FoodDetail } from './features/food/FoodDetail';
 import FilmList from './features/films/FilmList';
 import { FilmDetail } from './features/films/FilmDetail';
 import { EventList } from './features/events/EventList';
-import { selectBackDropStatus } from './features/backdrop/backDropSlice';
 import { selectBotNavIcon, setIcon } from './features/botnav/botNavSlice';
 import { isAuthenticate } from './utils/auth';
+import Profile from './components/Profile';
 
 const useStyles = makeStyles((theme) => ({
 	stickToBottom: {
@@ -39,7 +37,6 @@ function App() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const botNavIcon = useSelector(selectBotNavIcon);
-	const backDropStatus = useSelector(selectBackDropStatus);
 	const accessToken = useSelector((state) => state.auth.accessToken);
 	const refreshToken = useSelector((state) => state.auth.refreshToken);
 	const classes = useStyles();
@@ -57,10 +54,10 @@ function App() {
 
 	return (
 		<div className="App">
-			<Backdrop className={classes.backdrop} open={backDropStatus}>
+			{/* <Backdrop className={classes.backdrop} open={backDropStatus}>
 				<CircularProgress color="inherit" />
-			</Backdrop>
-			{isAuth ? <AppBar /> : ''}
+			</Backdrop> */}
+			{isAuth ? <AppBar isAuth={isAuth} /> : ''}
 			{isAuth ? (
 				<BottomNavigation
 					value={botNavIcon}
@@ -82,17 +79,20 @@ function App() {
 			) : (
 				''
 			)}
-			<Switch>
-				<ProtectedRoute path="/foods/:id" component={FoodDetail} />
-				<ProtectedRoute path="/foods" component={FoodList} />
-				<ProtectedRoute path="/films/:id" component={FilmDetail} />
-				<ProtectedRoute path="/films" component={FilmList} />
-				<ProtectedRoute path="/events" component={EventList} />
-				<Route path="/login" component={Login} />
-				<Route path="/not-found" component={NotFound} />
-				<ProtectedRoute path="/" component={Home} />
-				<Redirect to="/not-found" />
-			</Switch>
+			<Suspense fallback={<div>Loading...</div>}>
+				<Switch>
+					<ProtectedRoute path="/foods/:id" component={FoodDetail} />
+					<ProtectedRoute path="/foods" component={FoodList} />
+					<ProtectedRoute path="/films/:id" component={FilmDetail} />
+					<ProtectedRoute path="/films" component={FilmList} />
+					<ProtectedRoute path="/events" component={EventList} />
+					<ProtectedRoute path="/profile" component={Profile} />
+					<Route path="/login" component={Login} />
+					<Route path="/not-found" component={NotFound} />
+					<ProtectedRoute path="/" component={Home} />
+					<Redirect to="/not-found" />
+				</Switch>
+			</Suspense>
 		</div>
 	);
 }

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import queryString from 'querystring';
 import { get, getById } from '../../utils/client';
 
 export const selectAllFood = (state) => state.food.foods;
@@ -11,15 +12,14 @@ export const fetchFoods = createAsyncThunk(
 	'films/fetchFoods',
 	async (query, { getState, dispatch }) => {
 		try {
-			const response = await get(
-				`foods/?page=${query.page}&limit=${query.limit}`,
-				{
-					headers: {
-						Authorization: `${getState().auth.accessToken}`
-					}
+			const stringified = queryString.stringify(query);
+			// window.location.search = stringified;
+			const response = await get(`foods/?${stringified}`, {
+				headers: {
+					Authorization: `${getState().auth.accessToken}`
 				}
-			);
-			return response.results;
+			});
+			return response;
 		} catch (error) {
 			throw error;
 		}
@@ -45,10 +45,13 @@ export const getFoodById = createAsyncThunk(
 const initialState = {
 	foods: [],
 	foodOne: null,
-	pagination: {
+	isLoadMore: true,
+	query: {
 		page: 1,
-		limit: 5
+		limit: 2,
+		category: ''
 	},
+	total: 0,
 	statusAll: 'idle',
 	statusOne: 'idle',
 	error: null
@@ -59,10 +62,13 @@ const foodSlice = createSlice({
 	initialState,
 	reducers: {
 		nextPage: (state, action) => {
-			state.pagination.page = action.payload;
+			state.query.page = action.payload;
 		},
 		setLoadMore: (state, action) => {
 			state.isLoadMore = action.payload;
+		},
+		setQuery: (state, action) => {
+			state.query = action.payload;
 		},
 		destroySession: (state) => {
 			return initialState;
@@ -75,7 +81,8 @@ const foodSlice = createSlice({
 		[fetchFoods.fulfilled]: (state, action) => {
 			state.statusAll = 'succeeded';
 			// Add any fetched posts to the array
-			state.foods = state.foods.concat(action.payload);
+			state.foods = state.foods.concat(action.payload.results);
+			state.total = action.payload.count;
 		},
 		[fetchFoods.rejected]: (state, action) => {
 			state.statusAll = 'failed';
@@ -96,6 +103,11 @@ const foodSlice = createSlice({
 	}
 });
 
-export const { nextPage, setLoadMore, destroySession } = foodSlice.actions;
+export const {
+	nextPage,
+	setLoadMore,
+	setQuery,
+	destroySession
+} = foodSlice.actions;
 
 export default foodSlice.reducer;
