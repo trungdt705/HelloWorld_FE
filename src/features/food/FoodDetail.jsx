@@ -47,7 +47,6 @@ export const FoodDetail = (props) => {
 							className={classes.media}
 							image={food.thumbnail}
 							title="Contemplative Reptile"
-							P
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -65,9 +64,7 @@ export const FoodDetail = (props) => {
 	let content;
 	useEffect(() => {
 		async function getDetail() {
-			try {
-				await dispatch(getFoodById(match.params.id));
-			} catch (error) {}
+			await dispatch(getFoodById(match.params.id));
 		}
 		getDetail();
 	}, [dispatch, match.params.id]);
@@ -76,7 +73,6 @@ export const FoodDetail = (props) => {
 		content = renderContentSuccess(food);
 	}
 	if (status === 'failed') {
-		console.log(123);
 		history.push('/not-found');
 	}
 	return <div>{content}</div>;

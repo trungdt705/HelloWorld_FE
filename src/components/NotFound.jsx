@@ -5,5 +5,5 @@ import React from 'react';
 
 export const NotFound = () => {
 	// const classes = useStyles();
-	return <div>Not found</div>;
+	return <div style={{ marginTop: 60, marginBottom: 50 }}>Not found</div>;
 };

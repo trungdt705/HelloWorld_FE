@@ -40,16 +40,16 @@ export default function FilmCard(props) {
 		<Box border={1} borderColor="#f5f5f5">
 			<Card className={classes.root}>
 				<CardHeader
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={
-						<IconButton aria-label="settings">
-							<MoreVertIcon />
-						</IconButton>
-					}
+					// avatar={
+					// 	<Avatar aria-label="recipe" className={classes.avatar}>
+					// 		R
+					// 	</Avatar>
+					// }
+					// action={
+					// 	<IconButton aria-label="settings">
+					// 		<MoreVertIcon />
+					// 	</IconButton>
+					// }
 					title={sliceField(film.name, 30)}
 					subheader={transformPremiere(film.premiere)}
 				/>
@@ -69,14 +69,14 @@ export default function FilmCard(props) {
 						{sliceField(film.description, 30)}
 					</Typography>
 				</CardContent>
-				<CardActions disableSpacing>
+				{/* <CardActions disableSpacing>
 					<IconButton aria-label="add to favorites">
 						<FavoriteIcon />
 					</IconButton>
 					<IconButton aria-label="share">
 						<ShareIcon />
 					</IconButton>
-				</CardActions>
+				</CardActions> */}
 			</Card>
 		</Box>
 	);

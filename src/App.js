@@ -1,10 +1,12 @@
 import React, { useEffect, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
-import { makeStyles } from '@material-ui/core/styles';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import {
+	makeStyles,
+	BottomNavigation,
+	BottomNavigationAction
+} from '@material-ui/core';
 import { BOTNAV as botnav } from './contants/botnav';
 import AppBar from './components/AppBar';
 import Home from './components/Home';
@@ -16,6 +18,7 @@ import { FoodDetail } from './features/food/FoodDetail';
 import FilmList from './features/films/FilmList';
 import { FilmDetail } from './features/films/FilmDetail';
 import { EventList } from './features/events/EventList';
+import { EventDetail } from './features/events/EventDetail';
 import { selectBotNavIcon, setIcon } from './features/botnav/botNavSlice';
 import { isAuthenticate } from './utils/auth';
 import Profile from './components/Profile';
@@ -85,6 +88,10 @@ function App() {
 					<ProtectedRoute path="/foods" component={FoodList} />
 					<ProtectedRoute path="/films/:id" component={FilmDetail} />
 					<ProtectedRoute path="/films" component={FilmList} />
+					<ProtectedRoute
+						path="/events/:id"
+						component={EventDetail}
+					/>
 					<ProtectedRoute path="/events" component={EventList} />
 					<ProtectedRoute path="/profile" component={Profile} />
 					<Route path="/login" component={Login} />

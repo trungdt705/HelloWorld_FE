@@ -36,16 +36,16 @@ export default function FoodCard(props) {
 		<Box border={1} borderColor="#f5f5f5">
 			<Card className={classes.root}>
 				<CardHeader
-					avatar={
-						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					action={
-						<IconButton aria-label="settings">
-							<MoreVertIcon />
-						</IconButton>
-					}
+					// avatar={
+					// 	<Avatar aria-label="recipe" className={classes.avatar}>
+					// 		R
+					// 	</Avatar>
+					// }
+					// action={
+					// 	<IconButton aria-label="settings">
+					// 		<MoreVertIcon />
+					// 	</IconButton>
+					// }
 					title={food.name}
 					subheader={moment(food.created_at).format(
 						'YYYY-MM-DD HH:mm'
@@ -65,17 +65,18 @@ export default function FoodCard(props) {
 						color="textSecondary"
 						component="p"
 					>
+						<span style={{ fontWeight: 'bold' }}>Địa chỉ:</span>{' '}
 						{food.address}
 					</Typography>
 				</CardContent>
-				<CardActions disableSpacing>
+				{/* <CardActions disableSpacing>
 					<IconButton aria-label="add to favorites">
 						<FavoriteIcon />
 					</IconButton>
 					<IconButton aria-label="share">
 						<ShareIcon />
 					</IconButton>
-				</CardActions>
+				</CardActions> */}
 			</Card>
 		</Box>
 	);

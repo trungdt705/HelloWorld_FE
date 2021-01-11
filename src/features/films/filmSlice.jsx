@@ -51,7 +51,7 @@ const initialState = {
 	total: 0,
 	query: {
 		page: 1,
-		limit: 3
+		limit: 10
 	},
 	error: null
 };
