@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from '../app/store';
 import { handleRefreshToken } from '../utils/auth';
-const BASE_URL = 'http://119.82.135.130/api';
+const BASE_URL = 'https://api.giadungthongminh.press';
 
 // axios.interceptors.request.use(
 // 	async (config) => {
