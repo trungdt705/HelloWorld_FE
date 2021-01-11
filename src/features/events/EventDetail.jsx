@@ -50,36 +50,31 @@ const useStyles = makeStyles((theme) => ({
 
 const tileData = [
 	{
-		img:
-			'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg',
+		img: '/images/event_image.jpg',
 		title: 'Image',
 		author: 'author',
 		cols: 2
 	},
 	{
-		img:
-			'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg',
+		img: '/images/event_image.jpg',
 		title: 'Image',
 		author: 'author',
 		cols: 2
 	},
 	{
-		img:
-			'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg',
+		img: '/images/event_image.jpg',
 		title: 'Image',
 		author: 'author',
 		cols: 3
 	},
 	{
-		img:
-			'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg',
+		img: '/images/event_image.jpg',
 		title: 'Image',
 		author: 'author',
 		cols: 1
 	},
 	{
-		img:
-			'https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg',
+		img: '/images/event_image.jpg',
 		title: 'Image',
 		author: 'author',
 		cols: 2
@@ -105,7 +100,7 @@ export const EventDetail = (props) => {
 					}}
 				>
 					<img
-						src="https://backstage.vn/wp-content/uploads/2018/12/shutterstock_538256848.jpg"
+						src="/images/event_thumbnail.jpg"
 						style={{ width: '100%' }}
 					/>
 				</Grid>
