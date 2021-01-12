@@ -42,10 +42,7 @@ const useStyles = makeStyles((theme) => ({
 		overflow: 'hidden',
 		backgroundColor: theme.palette.background.paper
 	},
-	gridList: {
-		width: 500,
-		height: 450
-	}
+	gridList: {}
 }));
 
 const tileData = [
@@ -92,75 +89,19 @@ export const EventDetail = (props) => {
 	const renderContentSuccess = () => {
 		return (
 			<React.Fragment>
-				<Grid
-					container
-					style={{
-						paddingTop: 40,
-						textAlign: 'left'
-					}}
-				>
-					<img
-						src="/images/event_thumbnail.jpg"
-						style={{ width: '100%' }}
-					/>
-				</Grid>
 				<Container
-					maxWidth="sm"
 					style={{
-						marginTop: 20,
+						paddingTop: 60,
 						paddingBottom: 60,
 						textAlign: 'left'
 					}}
 				>
-					<Grid container style={{ marginBottom: 10 }} spacing={2}>
-						<Grid item xs={12}>
-							<Typography
-								variant="h4"
-								style={{ fontWeight: 'bold' }}
-							>
-								{event.name}
-							</Typography>
-						</Grid>
-						<Grid item xs={12}>
-							<span
-								className={classes.spanText}
-								style={{ marginRight: 5 }}
-							>
-								Tag:
-							</span>
-							<Chip
-								size="small"
-								label={event.tag.name}
-								style={{
-									backgroundColor: event.tag.color,
-									color: 'white'
-								}}
+					<Grid container spacing={3}>
+						<Grid item lg={6} xs={12}>
+							<img
+								src="/images/event_thumbnail.jpg"
+								style={{ width: '100%' }}
 							/>
-						</Grid>
-					</Grid>
-					<Divider />
-					<Grid container>
-						<Grid item xs={6}>
-							<Typography variant="h6">Thời gian</Typography>
-							<span className={classes.spanText}>
-								{moment(event.due_date).format('DD-MM-YYYY')}
-							</span>
-						</Grid>
-						<Grid item xs={6}>
-							<Typography variant="h6">Còn lại</Typography>
-							<span
-								className={
-									remainTime < 60
-										? classes.closeDay
-										: classes.farDay
-								}
-							>
-								{remainTime} {remainTime > 0 ? 'ngày' : ''}
-							</span>
-						</Grid>
-					</Grid>
-					<Grid style={{ marginTop: 20 }}>
-						<div className={classes.root}>
 							<GridList
 								cellHeight={200}
 								spacing={1}
@@ -190,7 +131,59 @@ export const EventDetail = (props) => {
 									</GridListTile>
 								))}
 							</GridList>
-						</div>
+						</Grid>
+						<Grid item lg={6} xs={12}>
+							<Typography
+								variant="h4"
+								style={{ fontWeight: 'bold' }}
+							>
+								{event.name}
+							</Typography>
+							<Grid item xs={12}>
+								<span
+									className={classes.spanText}
+									style={{ marginRight: 5 }}
+								>
+									Tag:
+								</span>
+								<Chip
+									size="small"
+									label={event.tag.name}
+									style={{
+										backgroundColor: event.tag.color,
+										color: 'white'
+									}}
+								/>
+							</Grid>
+							<Grid container>
+								<Grid item xs={6}>
+									<Typography variant="h6">
+										Thời gian
+									</Typography>
+									<span className={classes.spanText}>
+										{moment(event.due_date).format(
+											'DD-MM-YYYY'
+										)}
+									</span>
+								</Grid>
+								<Grid item xs={6}>
+									<Typography variant="h6">
+										Còn lại
+									</Typography>
+									<span
+										className={
+											remainTime < 60
+												? classes.closeDay
+												: classes.farDay
+										}
+									>
+										{remainTime}{' '}
+										{remainTime > 0 ? 'ngày' : ''}
+									</span>
+								</Grid>
+							</Grid>
+						</Grid>
+						<Divider />
 					</Grid>
 				</Container>
 			</React.Fragment>

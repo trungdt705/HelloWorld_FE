@@ -43,7 +43,14 @@ const FilmList = (props) => {
 		};
 	}, [dispatch, isNew, query]);
 	return (
-		<Container style={{ paddingTop: 60, paddingBottom: 50 }}>
+		<Container
+			style={{
+				paddingTop: 60,
+				paddingBottom: 50,
+				paddingLeft: 0,
+				paddingRight: 0
+			}}
+		>
 			<Suspense fallback={<div>Loading...</div>}>
 				<BackDropCustom open={open} />
 			</Suspense>

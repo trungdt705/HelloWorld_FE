@@ -75,7 +75,10 @@ const FoodList = (props) => {
 					<CategoryList />
 				</Grid>
 			</Container>
-			<Container fixed style={{ marginBottom: 50 }}>
+			<Container
+				fixed
+				style={{ marginBottom: 50, paddingLeft: 0, paddingRight: 0 }}
+			>
 				{data.length > 0 ? (
 					<InfiniteScroll
 						dataLength={data.length}
