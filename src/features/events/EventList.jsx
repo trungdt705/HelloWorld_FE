@@ -42,29 +42,33 @@ export const EventList = (props) => {
 		};
 	}, [dispatch, isNew, query]);
 	return (
-		<Timeline
-			align="alternate"
-			style={{ paddingTop: 50, paddingBottom: 50 }}
+		<Container
+			style={{
+				paddingTop: 30,
+				paddingBottom: 50,
+				paddingLeft: 0,
+				paddingRight: 0
+			}}
 		>
-			<Suspense fallback={<div>Loading...</div>}>
-				<BackDropCustom open={open} />
-			</Suspense>
-			{data.length > 0 ? (
-				<InfiniteScroll
-					dataLength={data.length}
-					next={loadMore}
-					hasMore={isLoadMore}
-					loader={<h4>Loading...</h4>}
-				>
-					<Container>
+			<Timeline align="alternate" style={{ padding: '0 0' }}>
+				<Suspense fallback={<div>Loading...</div>}>
+					<BackDropCustom open={open} />
+				</Suspense>
+				{data.length > 0 ? (
+					<InfiniteScroll
+						dataLength={data.length}
+						next={loadMore}
+						hasMore={isLoadMore}
+						loader={<h4>Loading...</h4>}
+					>
 						{data.map((event) => (
 							<EventItem event={event} key={event.id} />
 						))}
-					</Container>
-				</InfiniteScroll>
-			) : (
-				''
-			)}
-		</Timeline>
+					</InfiniteScroll>
+				) : (
+					''
+				)}
+			</Timeline>
+		</Container>
 	);
 };

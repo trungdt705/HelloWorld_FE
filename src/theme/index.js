@@ -1,6 +1,9 @@
 import { createMuiTheme } from '@material-ui/core';
 
 export const theme = createMuiTheme({
+	typography: {
+		fontFamily: 'Aref Ruqaa'
+	},
 	breakpoints: {
 		values: {
 			xs: 0,
