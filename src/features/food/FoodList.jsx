@@ -70,7 +70,7 @@ const FoodList = (props) => {
 			<Suspense fallback={<div>Loading...</div>}>
 				<BackDropCustom open={open} />
 			</Suspense>
-			<Container fixed style={{ marginTop: 60 }}>
+			<Container fixed style={{ marginTop: 100 }}>
 				<Grid container spacing={3} style={{ marginBottom: 16 }}>
 					<CategoryList />
 				</Grid>
@@ -83,20 +83,23 @@ const FoodList = (props) => {
 						hasMore={isLoadMore}
 						loader={<h4>Loading...</h4>}
 					>
-						{data.length > 0
-							? data.map((food) => {
-									return (
-										<Grid
-											item
-											xs={12}
-											key={food.id}
-											style={{ marginBottom: 12 }}
-										>
-											<FoodCard food={food} />
-										</Grid>
-									);
-							  })
-							: ''}
+						<Grid container>
+							{data.length > 0
+								? data.map((food) => {
+										return (
+											<Grid
+												item
+												xs={12}
+												lg={3}
+												key={food.id}
+												style={{ padding: 16 }}
+											>
+												<FoodCard food={food} />
+											</Grid>
+										);
+								  })
+								: ''}
+						</Grid>
 					</InfiniteScroll>
 				) : (
 					''

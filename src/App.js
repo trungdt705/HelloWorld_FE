@@ -33,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.drawer + 1,
 		color: '#fff'
+	},
+	sectionMobile: {
+		display: 'flex',
+		[theme.breakpoints.up('md')]: {
+			display: 'none'
+		}
 	}
 }));
 
@@ -66,7 +72,7 @@ function App() {
 					value={botNavIcon}
 					onChange={handleChange}
 					showLabels
-					className={classes.stickToBottom}
+					className={[classes.stickToBottom, classes.sectionMobile]}
 				>
 					{botnav.map((item) => {
 						return (

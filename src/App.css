@@ -37,3 +37,11 @@
 		transform: translateY(0px);
 	}
 }
+
+.pointer:hover {
+	cursor: pointer;
+}
+
+.item:hover {
+	border: 1px solid rgb(112, 76, 182);
+}

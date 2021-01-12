@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import store from '../app/store';
 import { handleRefreshToken } from '../utils/auth';
 const BASE_URL = 'https://api.giadungthongminh.press';
@@ -30,9 +31,24 @@ axios.interceptors.response.use(
 	},
 	async function (error) {
 		const originalRequest = error.config;
+		const refreshToken = localStorage.getItem('refresh_token');
+		if (!refreshToken) {
+			return Promise.reject(error);
+		}
+		if (refreshToken) {
+			const decodedRefreshToken = jwtDecode(refreshToken);
+			if (
+				!decodedRefreshToken ||
+				decodedRefreshToken.exp <
+					Math.round(new Date().getTime() / 1000)
+			) {
+				return Promise.reject(error);
+			}
+		}
 		if (error.response.status === 401 && !originalRequest._retry) {
+			console.log(originalRequest);
 			// originalRequest._retry = true;
-			await handleRefreshToken(localStorage.getItem('refresh_token'));
+			await handleRefreshToken(refreshToken);
 			// axios.defaults.headers.common['Authorization'] =
 			// 	'Bearer ' + access_token;
 			// return axios(originalRequest);

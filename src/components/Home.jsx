@@ -13,19 +13,19 @@ const categories = [
 	{
 		url: '/images/cinema.jpg',
 		title: 'Phim ảnh',
-		width: '33%',
+		width: '100%',
 		link: '/films'
 	},
 	{
 		url: '/images/foods.jpg',
 		title: 'Đồ ăn',
-		width: '33%',
+		width: '100%',
 		link: '/foods'
 	},
 	{
 		url: '/images/events.jpg',
 		title: 'Sự kiện',
-		width: '30%',
+		width: '100%',
 		link: '/events'
 	}
 ];
@@ -145,38 +145,43 @@ export default function Home(props) {
 					</div>
 				</Grid>
 			</Container>
-			{categories.map((category) => (
-				<ButtonBase
-					focusRipple
-					key={category.title}
-					className={classes.image}
-					focusVisibleClassName={classes.focusVisible}
-					style={{
-						width: category.width,
-						margin: 16
-					}}
-					onClick={() => goToPage(category.link)}
-				>
-					<span
-						className={classes.imageSrc}
-						style={{
-							backgroundImage: `url(${category.url})`
-						}}
-					/>
-					<span className={classes.imageBackdrop} />
-					<span className={classes.imageButton}>
-						<Typography
-							component="span"
-							variant="subtitle1"
-							color="inherit"
-							className={classes.imageTitle}
-						>
-							{category.title}
-							<span className={classes.imageMarked} />
-						</Typography>
-					</span>
-				</ButtonBase>
-			))}
+			<Container style={{ marginTop: 16 }}>
+				<Grid container spacing={3}>
+					{categories.map((category) => (
+						<Grid item lg={4} xs={12}>
+							<ButtonBase
+								focusRipple
+								key={category.title}
+								className={classes.image}
+								focusVisibleClassName={classes.focusVisible}
+								style={{
+									width: category.width
+								}}
+								onClick={() => goToPage(category.link)}
+							>
+								<span
+									className={classes.imageSrc}
+									style={{
+										backgroundImage: `url(${category.url})`
+									}}
+								/>
+								<span className={classes.imageBackdrop} />
+								<span className={classes.imageButton}>
+									<Typography
+										component="span"
+										variant="subtitle1"
+										color="inherit"
+										className={classes.imageTitle}
+									>
+										{category.title}
+										<span className={classes.imageMarked} />
+									</Typography>
+								</span>
+							</ButtonBase>
+						</Grid>
+					))}
+				</Grid>
+			</Container>
 		</div>
 	);
 }

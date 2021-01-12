@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Container } from '@material-ui/core';
 import Timeline from '@material-ui/lab/Timeline';
 import {
 	selectAllEvent,
@@ -55,9 +56,11 @@ export const EventList = (props) => {
 					hasMore={isLoadMore}
 					loader={<h4>Loading...</h4>}
 				>
-					{data.map((event) => (
-						<EventItem event={event} key={event.id} />
-					))}
+					<Container>
+						{data.map((event) => (
+							<EventItem event={event} key={event.id} />
+						))}
+					</Container>
 				</InfiniteScroll>
 			) : (
 				''

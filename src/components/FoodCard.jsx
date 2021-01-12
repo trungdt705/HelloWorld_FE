@@ -6,15 +6,10 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import moment from 'moment-timezone';
+import { sliceField } from '../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
 	media: {
@@ -33,7 +28,7 @@ export default function FoodCard(props) {
 	const classes = useStyles();
 	const { food } = props;
 	return (
-		<Box border={1} borderColor="#f5f5f5">
+		<Box border={1} borderColor="#f5f5f5" className={'item'}>
 			<Card className={classes.root}>
 				<CardHeader
 					// avatar={
@@ -46,7 +41,9 @@ export default function FoodCard(props) {
 					// 		<MoreVertIcon />
 					// 	</IconButton>
 					// }
-					title={food.name}
+					title={sliceField(food.name, 15)}
+					titleTypographyProps={{ variant: 'subtitle1' }}
+					subheaderTypographyProps={{ variant: 'subtitle2' }}
 					subheader={moment(food.created_at).format(
 						'YYYY-MM-DD HH:mm'
 					)}
@@ -66,7 +63,7 @@ export default function FoodCard(props) {
 						component="p"
 					>
 						<span style={{ fontWeight: 'bold' }}>Địa chỉ:</span>{' '}
-						{food.address}
+						{sliceField(food.address, 40)}
 					</Typography>
 				</CardContent>
 				{/* <CardActions disableSpacing>

@@ -33,14 +33,16 @@ export const CategoryList = () => {
 	};
 	if (status === 'succeeded') {
 		contentCategory = categories.map((category) => (
-			<Grid item xs={3} key={category.id}>
+			<Grid item xs={3} lg={1} key={category.id}>
 				<Avatar
 					onClick={() => getFoodsByCategory(category.id)}
 					alt={category.name}
 					src={category.thumbnail}
-					className={classes.large}
+					className={[classes.large, 'pointer']}
 				/>
-				<span style={{ fontWeight: 'bold' }}>{category.name}</span>
+				<div style={{ fontWeight: 'bold', marginTop: 10 }}>
+					{category.name}
+				</div>
 			</Grid>
 		));
 	}

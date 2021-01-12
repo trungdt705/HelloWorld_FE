@@ -15,7 +15,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -23,6 +22,7 @@ import ListItemLink from './ListItemLink';
 import { MENU as menu } from '../contants/menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../features/auth/authSlice';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -105,7 +105,11 @@ export default function PrimarySearchAppBar(props) {
 	const history = useHistory();
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [open, setOpen] = React.useState(false);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+	let isMenuOpen = Boolean(anchorEl);
+
 	const currentUser = useSelector((state) => state.user.currentUser);
 
 	const handleMobileMenuClose = () => {
@@ -118,7 +122,15 @@ export default function PrimarySearchAppBar(props) {
 		}
 	};
 
-	const [open, setOpen] = React.useState(false);
+	const handleProfileMenuOpen = (event) => {
+		if (props.isAuth) {
+			setAnchorEl(event.currentTarget);
+		}
+	};
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+		handleMobileMenuClose();
+	};
 
 	const handleDrawerOpen = () => {
 		setOpen(true);
@@ -142,6 +154,20 @@ export default function PrimarySearchAppBar(props) {
 	};
 
 	const menuId = 'primary-search-account-menu';
+	const renderMenu = (
+		<Menu
+			anchorEl={anchorEl}
+			anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+			id={menuId}
+			keepMounted
+			transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+			open={isMenuOpen}
+			onClose={handleMenuClose}
+		>
+			<MenuItem onClick={goToProfile}>Profile</MenuItem>
+			<MenuItem onClick={signOut}>Đăng xuất</MenuItem>
+		</Menu>
+	);
 
 	const mobileMenuId = 'primary-search-account-menu-mobile';
 	const renderMobileMenu = (
@@ -193,86 +219,90 @@ export default function PrimarySearchAppBar(props) {
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<div className={classes.grow}>
 				<AppBar className={classes.stickToTop}>
-					<Toolbar>
-						<IconButton
-							edge="start"
-							className={classes.menuButton}
-							color="inherit"
-							aria-label="open drawer"
-							onClick={handleDrawerOpen}
-						>
-							<MenuIcon />
-						</IconButton>
-						<Typography
-							className={classes.title}
-							variant="h6"
-							noWrap
-						>
-							Material-UI
-						</Typography>
-						<div className={classes.search}>
-							<div className={classes.searchIcon}>
-								<SearchIcon />
-							</div>
-							<InputBase
-								placeholder="Search…"
-								classes={{
-									root: classes.inputRoot,
-									input: classes.inputInput
-								}}
-								inputProps={{ 'aria-label': 'search' }}
-							/>
-						</div>
-						<div className={classes.grow} />
-						<div className={classes.sectionDesktop}>
+					<Container>
+						<Toolbar>
 							<IconButton
-								aria-label="show 4 new mails"
+								edge="start"
+								className={[classes.menuButton]}
 								color="inherit"
+								aria-label="open drawer"
+								onClick={handleDrawerOpen}
 							>
-								<Badge badgeContent={4} color="secondary">
-									<MailIcon />
-								</Badge>
+								<MenuIcon />
 							</IconButton>
-							<IconButton
-								aria-label="show 17 new notifications"
-								color="inherit"
+							<Typography
+								className={classes.title}
+								variant="h6"
+								noWrap
 							>
-								<Badge badgeContent={17} color="secondary">
-									<NotificationsIcon />
-								</Badge>
-							</IconButton>
-							<IconButton
-								edge="end"
-								aria-label="account of current user"
-								aria-controls={menuId}
-								aria-haspopup="true"
-								color="inherit"
-							>
-								<AccountCircle />
-							</IconButton>
-						</div>
-						<div className={classes.sectionMobile}>
-							<IconButton
-								aria-label="show more"
-								aria-controls={mobileMenuId}
-								aria-haspopup="true"
-								onClick={handleMobileMenuOpen}
-								color="inherit"
-							>
-								<Avatar
-									alt="Remy Sharp"
-									src={
-										currentUser && currentUser.avatar
-											? currentUser.avatar
-											: ''
-									}
-									className={classes.small}
+								Hello World
+							</Typography>
+							<div className={classes.search}>
+								<div className={classes.searchIcon}>
+									<SearchIcon />
+								</div>
+								<InputBase
+									placeholder="Search…"
+									classes={{
+										root: classes.inputRoot,
+										input: classes.inputInput
+									}}
+									inputProps={{ 'aria-label': 'search' }}
 								/>
-							</IconButton>
-						</div>
-					</Toolbar>
+							</div>
+							<div className={classes.grow} />
+							<div className={classes.sectionDesktop}>
+								<IconButton
+									aria-label="show 4 new mails"
+									color="inherit"
+								>
+									<Badge badgeContent={4} color="secondary">
+										<MailIcon />
+									</Badge>
+								</IconButton>
+								<IconButton
+									aria-label="show 17 new notifications"
+									color="inherit"
+								>
+									<Badge badgeContent={17} color="secondary">
+										<NotificationsIcon />
+									</Badge>
+								</IconButton>
+								<IconButton
+									edge="end"
+									aria-label="account of current user"
+									aria-controls={menuId}
+									aria-haspopup="true"
+									color="inherit"
+									onClick={handleProfileMenuOpen}
+								>
+									<AccountCircle />
+								</IconButton>
+							</div>
+							<div className={classes.sectionMobile}>
+								<IconButton
+									aria-label="show more"
+									aria-controls={mobileMenuId}
+									aria-haspopup="true"
+									onClick={handleMobileMenuOpen}
+									color="inherit"
+								>
+									<Avatar
+										alt="Remy Sharp"
+										src={
+											currentUser && currentUser.avatar
+												? currentUser.avatar
+												: ''
+										}
+										className={classes.small}
+									/>
+								</IconButton>
+							</div>
+						</Toolbar>
+					</Container>
 				</AppBar>
 				{renderMobileMenu}
+				{renderMenu}
 				<Drawer variant="persistent" anchor="left" open={open}>
 					<List>
 						{menu.map((item) => (

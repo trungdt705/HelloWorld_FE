@@ -43,7 +43,7 @@ const FilmList = (props) => {
 		};
 	}, [dispatch, isNew, query]);
 	return (
-		<Container fixed style={{ paddingTop: 50, paddingBottom: 50 }}>
+		<Container style={{ paddingTop: 60, paddingBottom: 50 }}>
 			<Suspense fallback={<div>Loading...</div>}>
 				<BackDropCustom open={open} />
 			</Suspense>
@@ -53,20 +53,26 @@ const FilmList = (props) => {
 				hasMore={isLoadMore}
 				loader={<h4>Loading...</h4>}
 			>
-				{data.length > 0
-					? data.map((film) => {
-							return (
-								<Grid
-									item
-									xs={12}
-									key={film.id}
-									style={{ marginBottom: 12 }}
-								>
-									<FilmCard film={film} />
-								</Grid>
-							);
-					  })
-					: ''}
+				<Grid container>
+					{data.length > 0
+						? data.map((film) => {
+								return (
+									<Grid
+										item
+										xs={12}
+										lg={3}
+										sm={4}
+										key={film.id}
+										style={{
+											padding: 16
+										}}
+									>
+										<FilmCard film={film} />
+									</Grid>
+								);
+						  })
+						: ''}
+				</Grid>
 			</InfiniteScroll>
 		</Container>
 	);

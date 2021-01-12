@@ -4,7 +4,8 @@ import {
 	CardMedia,
 	Chip,
 	Button,
-	makeStyles
+	makeStyles,
+	Typography
 } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import React, { useEffect } from 'react';
@@ -42,62 +43,61 @@ export const FilmDetail = (props) => {
 
 	const renderContentSuccess = (film) => {
 		return (
-			<Container
-				maxWidth="sm"
-				style={{ paddingTop: 50, paddingBottom: 60 }}
-			>
-				<Grid container spacing={1} style={{ textAlign: 'left' }}>
-					<Grid item xs={12}>
-						<h2>{film.name}</h2>
-					</Grid>
-					<Grid item xs={12}>
+			<Container style={{ paddingTop: 60, paddingBottom: 60 }}>
+				<Grid container spacing={3} style={{ textAlign: 'left' }}>
+					<Grid item xs={12} lg={6} sm={6}>
 						<CardMedia
 							className={classes.media}
 							image={film.image}
 							title="Contemplative Reptile"
 						/>
 					</Grid>
-					<Grid item xs={12}>
-						<span className={classes.title}>Thể loại:</span>
-						<span>{film.type}</span>
-					</Grid>
-					<Grid item xs={12}>
-						<span className={classes.title}>Thời lượng:</span>
-						<span>
-							<Chip
-								label={film.duration + ' Phút'}
-								clickable
+					<Grid item xs={12} lg={6} sm={6}>
+						<Grid item xs={12} lg={6} sm={6}>
+							<Typography variant="h4">{film.name}</Typography>
+						</Grid>
+						<Grid item xs={12}>
+							<span className={classes.title}>Thể loại:</span>
+							<span>{film.type}</span>
+						</Grid>
+						<Grid item xs={12}>
+							<span className={classes.title}>Thời lượng:</span>
+							<span>
+								<Chip
+									label={film.duration + ' Phút'}
+									clickable
+									color="primary"
+								/>
+							</span>
+						</Grid>
+						<Grid item xs={12}>
+							<span className={classes.title}>Diễn viên:</span>
+							<span>{film.cast}</span>
+						</Grid>
+						<Grid item xs={12}>
+							<span className={classes.title}>Khởi chiếu:</span>
+							<span>
+								<Chip
+									label={film.premiere}
+									clickable
+									color="secondary"
+									deleteIcon={<DoneIcon />}
+								/>
+							</span>
+						</Grid>
+						<Grid item xs={12}>
+							<span className={classes.title}>Mô tả:</span>
+							<p>{film.description}</p>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
 								color="primary"
-							/>
-						</span>
-					</Grid>
-					<Grid item xs={12}>
-						<span className={classes.title}>Diễn viên:</span>
-						<span>{film.cast}</span>
-					</Grid>
-					<Grid item xs={12}>
-						<span className={classes.title}>Khởi chiếu:</span>
-						<span>
-							<Chip
-								label={film.premiere}
-								clickable
-								color="secondary"
-								deleteIcon={<DoneIcon />}
-							/>
-						</span>
-					</Grid>
-					<Grid item xs={12}>
-						<span className={classes.title}>Mô tả:</span>
-						<p>{film.description}</p>
-					</Grid>
-					<Grid item xs={12}>
-						<Button
-							variant="outlined"
-							color="primary"
-							href={film.detail_link}
-						>
-							Link
-						</Button>
+								href={film.detail_link}
+							>
+								Link
+							</Button>
+						</Grid>
 					</Grid>
 				</Grid>
 			</Container>
