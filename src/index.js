@@ -6,14 +6,19 @@ import store from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { orange } from '@material-ui/core/colors';
+import { theme } from './theme';
 
 ReactDOM.render(
 	<React.Fragment>
-		<Provider store={store}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</Provider>
+		<ThemeProvider theme={theme}>
+			<Provider store={store}>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</Provider>
+		</ThemeProvider>
 	</React.Fragment>,
 	document.getElementById('root')
 );

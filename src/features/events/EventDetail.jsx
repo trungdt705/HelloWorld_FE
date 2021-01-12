@@ -133,12 +133,11 @@ export const EventDetail = (props) => {
 							</GridList>
 						</Grid>
 						<Grid item lg={6} xs={12}>
-							<Typography
-								variant="h4"
-								style={{ fontWeight: 'bold' }}
-							>
-								{event.name}
-							</Typography>
+							<Grid item xs={12}>
+								<Typography variant="h4">
+									{event.name}
+								</Typography>
+							</Grid>
 							<Grid item xs={12}>
 								<span
 									className={classes.spanText}

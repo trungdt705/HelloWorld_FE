@@ -39,7 +39,16 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.up('md')]: {
 			display: 'none'
 		}
-	}
+	},
+	/* Styles applied to the root element. */
+	root: {
+		color: theme.palette.text.secondary,
+		'&$selected': {
+			color: theme.palette.secondary.main
+		}
+	},
+	/* Styles applied to the root element if selected. */
+	selected: {}
 }));
 
 function App() {
@@ -81,6 +90,10 @@ function App() {
 								label={item.label}
 								value={item.value}
 								icon={item.icon}
+								classes={{
+									root: classes.root,
+									selected: classes.selected
+								}}
 							/>
 						);
 					})}

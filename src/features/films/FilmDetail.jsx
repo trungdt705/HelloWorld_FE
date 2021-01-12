@@ -53,7 +53,7 @@ export const FilmDetail = (props) => {
 						/>
 					</Grid>
 					<Grid item xs={12} lg={6} sm={6}>
-						<Grid item xs={12} lg={6} sm={6}>
+						<Grid item xs={12}>
 							<Typography variant="h4">{film.name}</Typography>
 						</Grid>
 						<Grid item xs={12}>

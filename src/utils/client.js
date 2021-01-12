@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import store from '../app/store';
+import { setAccessToken, setRefreshToken } from '../features/auth/authSlice';
 import { handleRefreshToken } from '../utils/auth';
 const BASE_URL = 'https://api.giadungthongminh.press';
 
@@ -46,7 +47,11 @@ axios.interceptors.response.use(
 			}
 		}
 		if (error.response.status === 401 && !originalRequest._retry) {
-			console.log(originalRequest);
+			if (originalRequest.url.indexOf('/token/refresh/') !== -1) {
+				store.dispatch(setAccessToken(null));
+				store.dispatch(setRefreshToken(null));
+				return Promise.reject(error);
+			}
 			// originalRequest._retry = true;
 			await handleRefreshToken(refreshToken);
 			// axios.defaults.headers.common['Authorization'] =

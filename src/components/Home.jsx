@@ -102,6 +102,9 @@ const useStyles = makeStyles((theme) => ({
 		bottom: -2,
 		left: 'calc(50% - 9px)',
 		transition: theme.transitions.create('opacity')
+	},
+	afterBar: {
+		marginTop: theme.spacing(7)
 	}
 }));
 
@@ -134,7 +137,7 @@ export default function Home(props) {
 
 	return (
 		<div className={classes.root}>
-			<Container fixed style={{ marginTop: 50 }}>
+			<Container fixed className={classes.afterBar}>
 				<Grid>
 					<div>
 						<Button variant="outlined" color="secondary">
@@ -145,7 +148,7 @@ export default function Home(props) {
 					</div>
 				</Grid>
 			</Container>
-			<Container style={{ marginTop: 16 }}>
+			<Container className={classes.afterBar}>
 				<Grid container spacing={3}>
 					{categories.map((category) => (
 						<Grid item lg={4} xs={12}>
@@ -155,7 +158,7 @@ export default function Home(props) {
 								className={classes.image}
 								focusVisibleClassName={classes.focusVisible}
 								style={{
-									width: category.width
+									width: '100%'
 								}}
 								onClick={() => goToPage(category.link)}
 							>

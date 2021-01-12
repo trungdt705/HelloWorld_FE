@@ -33,10 +33,8 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: theme.spacing(2)
 	},
 	title: {
-		display: 'none',
-		[theme.breakpoints.up('sm')]: {
-			display: 'block'
-		}
+		textShadow: '2px 2px 2px rgba(224, 66, 245, 0.4)',
+		fontFamily: 'Brush Script MT'
 	},
 	search: {
 		position: 'relative',
@@ -218,7 +216,7 @@ export default function PrimarySearchAppBar(props) {
 	return (
 		<ClickAwayListener onClickAway={handleClickAway}>
 			<div className={classes.grow}>
-				<AppBar className={classes.stickToTop}>
+				<AppBar className={classes.stickToTop} color="primary">
 					<Container>
 						<Toolbar>
 							<IconButton
@@ -231,25 +229,16 @@ export default function PrimarySearchAppBar(props) {
 								<MenuIcon />
 							</IconButton>
 							<Typography
-								className={classes.title}
-								variant="h6"
+								className={[classes.title, 'pointer']}
+								variant="h4"
 								noWrap
+								onClick={() => {
+									history.push('/');
+								}}
+								color="secondary"
 							>
 								Hello World
 							</Typography>
-							<div className={classes.search}>
-								<div className={classes.searchIcon}>
-									<SearchIcon />
-								</div>
-								<InputBase
-									placeholder="Search…"
-									classes={{
-										root: classes.inputRoot,
-										input: classes.inputInput
-									}}
-									inputProps={{ 'aria-label': 'search' }}
-								/>
-							</div>
 							<div className={classes.grow} />
 							<div className={classes.sectionDesktop}>
 								<IconButton
